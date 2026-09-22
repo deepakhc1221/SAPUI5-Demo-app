@@ -1,0 +1,673 @@
+<mvc:View
+    controllerName="demoapp.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:fb="sap.ui.comp.filterbar"
+    xmlns:t="sap.ui.table">
+
+    <Page
+        id="page"
+        title="{i18n>title}"
+        class="sapUiContentPadding">
+
+        <content>
+
+            <!-- ========================================================= -->
+            <!-- FILTER BAR                                                -->
+            <!-- ========================================================= -->
+
+            <fb:FilterBar
+    id="filterBar"
+    useToolbar="false"
+    showGoOnFB="true"
+    search=".onSearch"
+    showFilterConfiguration="false"
+    clear=".onClear">
+
+    <fb:filterGroupItems>
+
+        <!-- Company Code -->
+        <fb:FilterGroupItem
+            name="CompanyCode"
+            label="Company Code"
+            groupName="Basic"
+            visibleInFilterBar="true">
+
+            <fb:control>
+                <MultiComboBox
+                    id="companyCode"
+                    items="{/CompanyCodes}">
+                    <core:Item
+                        key="{key}"
+                        text="{text}"/>
+                </MultiComboBox>
+            </fb:control>
+
+        </fb:FilterGroupItem>
+
+
+        <!-- Fiscal Year -->
+        <!-- Fiscal Year -->
+<fb:FilterGroupItem
+    name="FiscalYear"
+    label="Fiscal Year"
+    groupName="Basic"
+    visibleInFilterBar="true">
+
+    <fb:control>
+        <MultiComboBox
+            id="fiscalYear"
+            width="180px"
+            items="{/FiscalYears}">
+            <core:Item
+                key="{key}"
+                text="{text}"/>
+        </MultiComboBox>
+    </fb:control>
+
+</fb:FilterGroupItem>
+
+
+
+        <!-- MIRO Invoice Number -->
+        <fb:FilterGroupItem
+            name="InvoiceNumber"
+            label="MIRO Invoice Number"
+            groupName="Basic"
+            visibleInFilterBar="true">
+
+            <fb:control>
+                <Input
+                    id="invoiceNumber"
+                    placeholder="Enter invoice number"/>
+            </fb:control>
+
+        </fb:FilterGroupItem>
+
+    </fb:filterGroupItems>
+    
+
+</fb:FilterBar>
+
+
+
+            <!-- ========================================================= -->
+            <!-- TABLE TOOLBAR                                              -->
+            <!-- ========================================================= -->
+
+            <Toolbar
+                class="sapUiTinyMarginBottom">
+
+                <Title
+                    text="MIRO / Accounting Documents"
+                    level="H2"/>
+
+                
+
+            </Toolbar>
+
+
+            <!-- ========================================================= -->
+            <!-- SAP UI TABLE                                               -->
+            <!-- ========================================================= -->
+
+            <t:Table
+                id="invoiceTable"
+
+                rows="{/Invoices}"
+
+                visibleRowCount="8"
+                rowHeight="42"
+
+                selectionMode="None"
+
+                enableColumnReordering="true"
+                enableCellFilter="false"
+
+                enableSelectAll="false"
+
+                alternateRowColors="true"
+
+                width="100%"
+
+                class="invoiceTable">
+
+
+                <!-- ===================================================== -->
+                <!-- COMPANY CODE                                          -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="9rem"
+                    hAlign="Center"
+                    sortProperty="CompanyCode">
+
+                    <Label text="Company Code"/>
+
+                    <t:template>
+                        <Text
+                            text="{CompanyCode}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- ACCOUNTING DOCUMENT                                   -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="15rem"
+                    hAlign="Center"
+                    sortProperty="AccountingDocument">
+
+                    <Label
+                        text="Accounting Document"/>
+
+                    <t:template>
+                        <Text
+                            text="{AccountingDocument}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- FISCAL YEAR                                           -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="8rem"
+                    hAlign="Center"
+                    sortProperty="FiscalYear">
+
+                    <Label text="Fiscal Year"/>
+
+                    <t:template>
+                        <Text
+                            text="{FiscalYear}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- MIRO INVOICE NUMBER                                   -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="15rem"
+                    hAlign="Center"
+                    sortProperty="InvoiceNumber">
+
+                    <Label text="MIRO Invoice Number"/>
+
+                    <t:template>
+                        <Text
+                            text="{InvoiceNumber}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- DOCUMENT TYPE                                         -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="9rem"
+                    hAlign="Center"
+                    sortProperty="DocumentType">
+
+                    <Label text="Document Type"/>
+
+                    <t:template>
+                        <Text
+                            text="{DocumentType}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- INVOICE TYPE                                          -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="10rem"
+                    hAlign="Center"
+                    sortProperty="InvoiceType">
+
+                    <Label text="Invoice Type"/>
+
+                    <t:template>
+                        <Text
+                            text="{InvoiceType}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- ITEM TYPE                                              -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="10rem"
+                    hAlign="Center"
+                    sortProperty="ItemType">
+
+                    <Label text="Item Type"/>
+
+                    <t:template>
+                        <Text
+                            text="{ItemType}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- INVOICE DATE                                          -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="11rem"
+                    hAlign="Center"
+                    sortProperty="InvoiceDate">
+
+                    <Label text="Invoice Date"/>
+
+                    <t:template>
+                        <Text
+                            text="{InvoiceDate}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- POSTING DATE                                          -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="13rem"
+                    hAlign="Center"
+                    sortProperty="PostingDate">
+
+                    <Label
+                        text="Posting Date in Document"/>
+
+                    <t:template>
+                        <Text
+                            text="{PostingDate}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- ENTERED ON                                            -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="11rem"
+                    hAlign="Center"
+                    sortProperty="EnteredOn">
+
+                    <Label text="Entered On"/>
+
+                    <t:template>
+                        <Text
+                            text="{EnteredOn}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- SUPPLY DATE                                           -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="11rem"
+                    hAlign="Center"
+                    sortProperty="SupplyDate">
+
+                    <Label text="Supply Date"/>
+
+                    <t:template>
+                        <Text
+                            text="{SupplyDate}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- NEWGEN RECEIPT DATE                                    -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="13rem"
+                    hAlign="Center"
+                    sortProperty="NewgenRecDate">
+
+                    <Label text="Newgen Rec Date"/>
+
+                    <t:template>
+                        <Text
+                            text="{NewgenRecDate}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- SAP REFERENCE NUMBER                                   -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="16rem"
+                    hAlign="Center"
+                    sortProperty="SAPReferenceNumber">
+
+                    <Label text="SAP Reference Number"/>
+
+                    <t:template>
+                        <Text
+                            text="{SAPReferenceNumber}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- PURCHASING DOCUMENT                                   -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="17rem"
+                    hAlign="Center"
+                    sortProperty="PurchasingDocumentNumber">
+
+                    <Label text="Purchasing Document Number"/>
+
+                    <t:template>
+                        <Text
+                            text="{PurchasingDocumentNumber}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- CURRENCY                                              -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="9rem"
+                    hAlign="Center"
+                    sortProperty="CurrencyKey">
+
+                    <Label text="Currency Key"/>
+
+                    <t:template>
+                        <Text
+                            text="{CurrencyKey}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- VENDOR NAME                                            -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="20rem"
+                    hAlign="Begin"
+                    sortProperty="VendorName">
+
+                    <Label text="Vendor Name"/>
+
+                    <t:template>
+                        <Text
+                            text="{VendorName}"
+                            textAlign="Begin"
+                            wrapping="false"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- VENDOR NUMBER                                          -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="12rem"
+                    hAlign="Center"
+                    sortProperty="VendorNumber">
+
+                    <Label text="Vendor Number"/>
+
+                    <t:template>
+                        <Text
+                            text="{VendorNumber}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- VENDOR COUNTRY                                         -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="12rem"
+                    hAlign="Center"
+                    sortProperty="VendorCountry">
+
+                    <Label text="Vendor Country"/>
+
+                    <t:template>
+                        <Text
+                            text="{VendorCountry}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- VAT ID                                                 -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="17rem"
+                    hAlign="Center"
+                    sortProperty="VATID">
+
+                    <Label text="VAT ID"/>
+
+                    <t:template>
+                        <Text
+                            text="{VATID}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- AMOUNT LOCAL CURRENCY                                  -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="17rem"
+                    hAlign="End"
+                    sortProperty="AmountLocalCurrency">
+
+                    <Label text="Amount in Local Currency"/>
+
+                    <t:template>
+                        <ObjectNumber
+                            number="{AmountLocalCurrency}"
+                            unit="{CurrencyKey}"
+                            emphasized="false"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- VAT AMOUNT                                             -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="13rem"
+                    hAlign="End"
+                    sortProperty="VATAmount">
+
+                    <Label text="VAT Amount"/>
+
+                    <t:template>
+                        <ObjectNumber
+                            number="{VATAmount}"
+                            unit="{CurrencyKey}"
+                            emphasized="false"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- NET AMOUNT                                             -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="13rem"
+                    hAlign="End"
+                    sortProperty="NetAmount">
+
+                    <Label text="Net Amount"/>
+
+                    <t:template>
+                        <ObjectNumber
+                            number="{NetAmount}"
+                            unit="{CurrencyKey}"
+                            emphasized="true"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- SAP STATUS                                             -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="12rem"
+                    hAlign="Center"
+                    sortProperty="SAPStatus">
+
+                    <Label text="SAP Status"/>
+
+                    <t:template>
+                        <ObjectStatus
+                            text="{SAPStatus}"
+                            state="{
+                                path: 'SAPStatus',
+                                formatter: '.formatStatus'
+                            }"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- SAP SENT DATE                                          -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="12rem"
+                    hAlign="Center"
+                    sortProperty="SAPSentDate">
+
+                    <Label text="SAP Sent Date"/>
+
+                    <t:template>
+                        <Text
+                            text="{SAPSentDate}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- SAP SENT TIME                                          -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="12rem"
+                    hAlign="Center"
+                    sortProperty="SAPSentTime">
+
+                    <Label text="SAP Sent Time"/>
+
+                    <t:template>
+                        <Text
+                            text="{SAPSentTime}"
+                            textAlign="Center"/>
+                    </t:template>
+
+                </t:Column>
+
+
+                <!-- ===================================================== -->
+                <!-- STATUS DESCRIPTION                                     -->
+                <!-- ===================================================== -->
+
+                <t:Column
+                    width="30rem"
+                    hAlign="Begin"
+                    sortProperty="StatusDescription">
+
+                    <Label text="Status Description"/>
+
+                    <t:template>
+                        <Text
+                            text="{StatusDescription}"
+                            textAlign="Begin"
+                            wrapping="false"
+                            tooltip="{StatusDescription}"/>
+                    </t:template>
+
+                </t:Column>
+
+            </t:Table>
+
+        </content>
+
+    </Page>
+
+</mvc:View>
