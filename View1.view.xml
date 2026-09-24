@@ -13,6 +13,26 @@
 
         <content>
 
+      
+<Toolbar
+    class="sapUiTinyMarginBottom">
+
+    <Title
+        text="MIRO / Accounting Documents"
+        level="H2"/>
+
+    <ToolbarSpacer/>
+
+    <Button
+        text="Download Excel"
+        icon="sap-icon://excel-attachment"
+        type="Emphasized"
+        press=".onDownloadExcel"/>
+
+</Toolbar>
+
+
+
             <!-- ========================================================= -->
             <!-- FILTER BAR                                                -->
             <!-- ========================================================= -->
