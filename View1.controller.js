@@ -3,15 +3,20 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/ui/model/FilterType"
+    "sap/ui/model/FilterType",
+    "sap/m/MessageToast",
+    "sap/ui/export/Spreadsheet",
+    "sap/ui/export/library"
 ], function (
     Controller,
     JSONModel,
     Filter,
     FilterOperator,
-    FilterType
+    FilterType,
+    MessageToast, Spreadsheet, exportLibrary
 ) {
     "use strict";
+    var EdmType = exportLibrary.EdmType;
 
     return Controller.extend("demoapp.controller.View1", {
 
@@ -237,6 +242,170 @@ sap.ui.define([
             var oModel = new JSONModel(oData);
 
             this.getView().setModel(oModel);
+        },
+         onDownloadExcel: function () {
+            var oModel = this.getView().getModel();
+            var aData = oModel.getProperty("/Invoices");
+
+            if (!aData || aData.length === 0) {
+                MessageToast.show("No records available to download.");
+                return;
+            }
+
+            var aCols = [
+                {
+                    label: "Company Code",
+                    property: "CompanyCode",
+                    type: EdmType.String
+                },
+                {
+                    label: "Accounting Document",
+                    property: "AccountingDocument",
+                    type: EdmType.String
+                },
+                {
+                    label: "Fiscal Year",
+                    property: "FiscalYear",
+                    type: EdmType.String
+                },
+                {
+                    label: "MIRO Invoice Number",
+                    property: "InvoiceNumber",
+                    type: EdmType.String
+                },
+                {
+                    label: "Document Type",
+                    property: "DocumentType",
+                    type: EdmType.String
+                },
+                {
+                    label: "Invoice Type",
+                    property: "InvoiceType",
+                    type: EdmType.String
+                },
+                {
+                    label: "Item Type",
+                    property: "ItemType",
+                    type: EdmType.String
+                },
+                {
+                    label: "Invoice Date",
+                    property: "InvoiceDate",
+                    type: EdmType.String
+                },
+                {
+                    label: "Posting Date in Document",
+                    property: "PostingDate",
+                    type: EdmType.String
+                },
+                {
+                    label: "Entered On",
+                    property: "EnteredOn",
+                    type: EdmType.String
+                },
+                {
+                    label: "Supply Date",
+                    property: "SupplyDate",
+                    type: EdmType.String
+                },
+                {
+                    label: "Newgen Rec Date",
+                    property: "NewgenRecDate",
+                    type: EdmType.String
+                },
+                {
+                    label: "SAP Reference Number",
+                    property: "SAPReferenceNumber",
+                    type: EdmType.String
+                },
+                {
+                    label: "Purchasing Document Number",
+                    property: "PurchasingDocumentNumber",
+                    type: EdmType.String
+                },
+                {
+                    label: "Currency Key",
+                    property: "CurrencyKey",
+                    type: EdmType.String
+                },
+                {
+                    label: "Vendor Name",
+                    property: "VendorName",
+                    type: EdmType.String
+                },
+                {
+                    label: "Vendor Number",
+                    property: "VendorNumber",
+                    type: EdmType.String
+                },
+                {
+                    label: "Vendor Country",
+                    property: "VendorCountry",
+                    type: EdmType.String
+                },
+                {
+                    label: "VAT ID",
+                    property: "VATID",
+                    type: EdmType.String
+                },
+                {
+                    label: "Amount in Local Currency",
+                    property: "AmountLocalCurrency",
+                    type: EdmType.Number
+                },
+                {
+                    label: "VAT Amount",
+                    property: "VATAmount",
+                    type: EdmType.Number
+                },
+                {
+                    label: "Net Amount",
+                    property: "NetAmount",
+                    type: EdmType.Number
+                },
+                {
+                    label: "SAP Status",
+                    property: "SAPStatus",
+                    type: EdmType.String
+                },
+                {
+                    label: "SAP Sent Date",
+                    property: "SAPSentDate",
+                    type: EdmType.String
+                },
+                {
+                    label: "SAP Sent Time",
+                    property: "SAPSentTime",
+                    type: EdmType.String
+                },
+                {
+                    label: "Status Description",
+                    property: "StatusDescription",
+                    type: EdmType.String
+                }
+            ];
+
+            var oSettings = {
+                workbook: {
+                    columns: aCols
+                },
+                dataSource: aData,
+                fileName: "MIRO_Accounting_Documents.xlsx"
+            };
+
+            var oSpreadsheet = new Spreadsheet(oSettings);
+
+            oSpreadsheet.build()
+                .then(function () {
+                    MessageToast.show("Excel file downloaded successfully.");
+                })
+                .catch(function (oError) {
+                    MessageToast.show("Error while downloading Excel file.");
+                    console.error("Excel export error:", oError);
+                })
+                .finally(function () {
+                    oSpreadsheet.destroy();
+                });
         },
 
 
