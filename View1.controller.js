@@ -244,169 +244,190 @@ sap.ui.define([
             this.getView().setModel(oModel);
         },
          onDownloadExcel: function () {
-            var oModel = this.getView().getModel();
-            var aData = oModel.getProperty("/Invoices");
 
-            if (!aData || aData.length === 0) {
-                MessageToast.show("No records available to download.");
-                return;
-            }
+    var oTable = this.byId("invoiceTable");
+    var oBinding = oTable.getBinding("rows");
 
-            var aCols = [
-                {
-                    label: "Company Code",
-                    property: "CompanyCode",
-                    type: EdmType.String
-                },
-                {
-                    label: "Accounting Document",
-                    property: "AccountingDocument",
-                    type: EdmType.String
-                },
-                {
-                    label: "Fiscal Year",
-                    property: "FiscalYear",
-                    type: EdmType.String
-                },
-                {
-                    label: "MIRO Invoice Number",
-                    property: "InvoiceNumber",
-                    type: EdmType.String
-                },
-                {
-                    label: "Document Type",
-                    property: "DocumentType",
-                    type: EdmType.String
-                },
-                {
-                    label: "Invoice Type",
-                    property: "InvoiceType",
-                    type: EdmType.String
-                },
-                {
-                    label: "Item Type",
-                    property: "ItemType",
-                    type: EdmType.String
-                },
-                {
-                    label: "Invoice Date",
-                    property: "InvoiceDate",
-                    type: EdmType.String
-                },
-                {
-                    label: "Posting Date in Document",
-                    property: "PostingDate",
-                    type: EdmType.String
-                },
-                {
-                    label: "Entered On",
-                    property: "EnteredOn",
-                    type: EdmType.String
-                },
-                {
-                    label: "Supply Date",
-                    property: "SupplyDate",
-                    type: EdmType.String
-                },
-                {
-                    label: "Newgen Rec Date",
-                    property: "NewgenRecDate",
-                    type: EdmType.String
-                },
-                {
-                    label: "SAP Reference Number",
-                    property: "SAPReferenceNumber",
-                    type: EdmType.String
-                },
-                {
-                    label: "Purchasing Document Number",
-                    property: "PurchasingDocumentNumber",
-                    type: EdmType.String
-                },
-                {
-                    label: "Currency Key",
-                    property: "CurrencyKey",
-                    type: EdmType.String
-                },
-                {
-                    label: "Vendor Name",
-                    property: "VendorName",
-                    type: EdmType.String
-                },
-                {
-                    label: "Vendor Number",
-                    property: "VendorNumber",
-                    type: EdmType.String
-                },
-                {
-                    label: "Vendor Country",
-                    property: "VendorCountry",
-                    type: EdmType.String
-                },
-                {
-                    label: "VAT ID",
-                    property: "VATID",
-                    type: EdmType.String
-                },
-                {
-                    label: "Amount in Local Currency",
-                    property: "AmountLocalCurrency",
-                    type: EdmType.Number
-                },
-                {
-                    label: "VAT Amount",
-                    property: "VATAmount",
-                    type: EdmType.Number
-                },
-                {
-                    label: "Net Amount",
-                    property: "NetAmount",
-                    type: EdmType.Number
-                },
-                {
-                    label: "SAP Status",
-                    property: "SAPStatus",
-                    type: EdmType.String
-                },
-                {
-                    label: "SAP Sent Date",
-                    property: "SAPSentDate",
-                    type: EdmType.String
-                },
-                {
-                    label: "SAP Sent Time",
-                    property: "SAPSentTime",
-                    type: EdmType.String
-                },
-                {
-                    label: "Status Description",
-                    property: "StatusDescription",
-                    type: EdmType.String
-                }
-            ];
+    if (!oBinding) {
+        sap.m.MessageToast.show("No table data available.");
+        return;
+    }
 
-            var oSettings = {
-                workbook: {
-                    columns: aCols
-                },
-                dataSource: aData,
-                fileName: "MIRO_Accounting_Documents.xlsx"
-            };
+    // Get the contexts currently available in the table binding
+    var aContexts = oBinding.getContexts(0, oBinding.getLength());
 
-            var oSpreadsheet = new Spreadsheet(oSettings);
+    if (!aContexts || aContexts.length === 0) {
+        sap.m.MessageToast.show("No records available for download.");
+        return;
+    }
 
-            oSpreadsheet.build()
-                .then(function () {
-                    MessageToast.show("Excel file downloaded successfully.");
-                })
-                .catch(function (oError) {
-                    MessageToast.show("Error while downloading Excel file.");
-                    console.error("Excel export error:", oError);
-                })
-                .finally(function () {
-                    oSpreadsheet.destroy();
-                });
+    // Convert binding contexts into actual objects
+    var aData = aContexts.map(function (oContext) {
+        return oContext.getObject();
+    });
+
+    // Excel columns
+    var aCols = [
+        {
+            label: "Company Code",
+            property: "CompanyCode",
+            type: sap.ui.export.EdmType.String
         },
+        {
+            label: "Accounting Document",
+            property: "AccountingDocument",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Fiscal Year",
+            property: "FiscalYear",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "MIRO Invoice Number",
+            property: "InvoiceNumber",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Document Type",
+            property: "DocumentType",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Invoice Type",
+            property: "InvoiceType",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Item Type",
+            property: "ItemType",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Invoice Date",
+            property: "InvoiceDate",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Posting Date in Document",
+            property: "PostingDate",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Entered On",
+            property: "EnteredOn",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Supply Date",
+            property: "SupplyDate",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Newgen Rec Date",
+            property: "NewgenRecDate",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "SAP Reference Number",
+            property: "SAPReferenceNumber",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Purchasing Document Number",
+            property: "PurchasingDocumentNumber",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Currency Key",
+            property: "CurrencyKey",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Vendor Name",
+            property: "VendorName",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Vendor Number",
+            property: "VendorNumber",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Vendor Country",
+            property: "VendorCountry",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "VAT ID",
+            property: "VATID",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Amount in Local Currency",
+            property: "AmountLocalCurrency",
+            type: sap.ui.export.EdmType.Number
+        },
+        {
+            label: "VAT Amount",
+            property: "VATAmount",
+            type: sap.ui.export.EdmType.Number
+        },
+        {
+            label: "Net Amount",
+            property: "NetAmount",
+            type: sap.ui.export.EdmType.Number
+        },
+        {
+            label: "SAP Status",
+            property: "SAPStatus",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "SAP Sent Date",
+            property: "SAPSentDate",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "SAP Sent Time",
+            property: "SAPSentTime",
+            type: sap.ui.export.EdmType.String
+        },
+        {
+            label: "Status Description",
+            property: "StatusDescription",
+            type: sap.ui.export.EdmType.String
+        }
+    ];
+
+    var oSettings = {
+        workbook: {
+            columns: aCols
+        },
+
+        dataSource: aData,
+
+        fileName: "MIRO_Accounting_Documents.xlsx"
+    };
+
+    var oSpreadsheet = new sap.ui.export.Spreadsheet(oSettings);
+
+    oSpreadsheet.build()
+        .then(function () {
+            sap.m.MessageToast.show(
+                aData.length + " record(s) downloaded successfully."
+            );
+        })
+        .catch(function (oError) {
+            console.error("Excel export error:", oError);
+            sap.m.MessageToast.show(
+                "Error while downloading Excel file."
+            );
+        })
+        .finally(function () {
+            oSpreadsheet.destroy();
+        });
+},
 
 
         // =========================================================
